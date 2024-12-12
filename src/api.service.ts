@@ -11,9 +11,11 @@ export class ApiService {
 
   constructor(private http:HttpClient) { }
   
-  baseurl="https://foodappapi-b7ig.onrender.com";
+  // baseurl="https://foodappapi-b7ig.onrender.com";
  // "https://foodapi-mq1q.onrender.com";
-  
+ //https://server-ecom-2.onrender.com/
+
+ baseurl="https://server-ecom-2.onrender.com";
   post(path:any,data:any):Observable<any>{
     return this.http.post(this.baseurl+path,data)
   }
@@ -35,6 +37,11 @@ export class ApiService {
   }
   postCategory(path: string, data: any): Observable<any> {
     return this.http.post<any>(this.baseurl + '/category/save', data);
+  }
+
+
+  customDataGetData(path:any,data:any){
+    return this.http.post<any>(this.baseurl+path,data);
   }
     
   }

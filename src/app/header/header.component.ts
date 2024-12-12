@@ -8,9 +8,11 @@ import { ApiService } from 'src/api.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+
   categoryitem: any[] = [];
   userName: any;
   displayLogoutConfirmation: boolean = false; // For logout confirmation modal
+  subcategoryitem: any;
 
   constructor(private route: Router, private api: ApiService) { }
 
@@ -23,9 +25,9 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  navigateToFood(id: number) {
-    this.route.navigate(['/food'], { queryParams: { id: id } });
-    console.log("Navigated to food with id:", id);
+  navigateToFood(categoryid: number,subcategoryid:number) {
+    this.route.navigate(['/food'], { queryParams: { categoryid: categoryid,subcategoryid:subcategoryid} });
+    console.log("Navigated to food with id:", { categoryid: categoryid,subcategoryid:subcategoryid});
   }
 
   signup() {
@@ -45,9 +47,18 @@ export class HeaderComponent implements OnInit {
   }
 
   getall() {
-    this.api.get('/category/getall').subscribe((res) => {
+    console.log("getAllCalled");
+    
+    const data={
+      
+        "dataCode": "GET_ALL_CATEGORY",
+        "placeholderKeyValueMap": {
+        }
+      
+    }
+    this.api.customDataGetData('/customdata/getdata',data).subscribe((res) => {
       console.log(res);
-      this.categoryitem = res;
+      this.categoryitem = res.responseContent;
     });
   }
 
@@ -66,4 +77,23 @@ export class HeaderComponent implements OnInit {
     this.route.navigate(['login']);
     this.closeLogoutConfirmation();
   }
+
+
+  getSubCategoryDetails(id:number) {
+    console.log(id);
+
+    const data={
+      
+      "dataCode": "GET_SUBCATEGORY_BY_CATEGORY_ID",
+      "placeholderKeyValueMap": {
+        "categoryId":id
+      }
+    
+  }
+  this.api.customDataGetData('/customdata/getdata',data).subscribe((res) => {
+    console.log(res);
+    this.subcategoryitem = res.responseContent;
+  });
+    
+    }
 }

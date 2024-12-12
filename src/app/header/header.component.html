@@ -17,10 +17,10 @@
             </a>
             <div class="dropdown-content">
               <div class="sub-dropdown box" *ngFor="let data of categoryitem">
-                <a>{{data.categoryName}}</a>
+                <a (mouseover)="getSubCategoryDetails(data.id)">{{data.category_name}}</a>
                 <div class="sub-dropdown-content">
-                  <a *ngFor="let item of data.subcategory"
-                    (click)="navigateToFood(item.id)">{{item.subCategoryName}}</a>
+                  <a *ngFor="let item of subcategoryitem"
+                    (click)="navigateToFood(data.id,item.id)">{{item.subcategory_name}}</a>
                 </div>
               </div>
             </div>

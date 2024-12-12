@@ -5,10 +5,9 @@
       <div class="col mt-4" *ngFor="let data of nonveg">
         <div class="">
           <div class="p-4 mt-4 img-thumbnail">
-            <img [src]="imagePaths[data.id]" (onload)="loadImage()" width="350px" height="250px"
-              *ngIf="imagePaths[data.id]">
+            <img [src]="data.file_path"  width="350px" height="250px"/>
             <div class="color ms-5 mt-4">
-              <h5 class="color">Product Name: {{data.productName}}</h5>
+              <h5 class="color">Product Name: {{data.product_name}}</h5>
               <h5 class="color">Price: {{data.price}}</h5>
             </div>
             <div class="d-flex mt-3">

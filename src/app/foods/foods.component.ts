@@ -13,6 +13,8 @@ export class FoodsComponent implements OnInit {
   nonveg: any[] = [];
   imagePaths: { [key: number]: string } = {};
   category: any;
+  categoryId: any;
+  subcategoryId: any;
 
   constructor(
     private api: ApiService,
@@ -24,8 +26,9 @@ export class FoodsComponent implements OnInit {
   ngOnInit() {
     // Subscribe to query parameters to react to changes
     this.routes.queryParams.subscribe(params => {
-      this.category = params['id'];
-      console.log(this.category, "<========");
+      this.categoryId = params['categoryid'];
+      this.subcategoryId=params['subcategoryid']
+      console.log(this.categoryId,this.subcategoryId, "<========");
       this.getProductsByCategory(); // Fetch products when category changes
     });
 
@@ -38,27 +41,22 @@ export class FoodsComponent implements OnInit {
   }
 
   getProductsByCategory() {
-    this.api.get('/products/getByCategory/' + this.category).subscribe((res) => {
-      console.log("Fetched products successfully");
-      this.nonveg = res;
-
-      // Fetch image paths for each product
-      this.nonveg.forEach(product => {
-        this.getImage(product.id);
-      });
-    });
-  }
-
-  getImage(id: number) {
-    this.api.get('/products/getproductDetailsById/' + id).subscribe(
-      (res) => {
-        this.imagePaths[id] = res.filePath; // Store the image path in the imagePaths object
-      },
-      (error) => {
-        console.error('Error fetching image:', error);
+    const data={
+      
+      "dataCode": "GET_PRODUCTS_BY_CATEGORYID_AND_SUB_CATEGORYID",
+      "placeholderKeyValueMap": {
+        "categoryId":this.categoryId,
+        "subCategoryId":this.subcategoryId
       }
-    );
+    
   }
+  this.api.customDataGetData('/customdata/getdata',data).subscribe((res) => {
+    console.log(res);
+    this.nonveg = res.responseContent;
+  });
+ 
+  }
+
 
   post(data: any) {
     if (this.userId) {
